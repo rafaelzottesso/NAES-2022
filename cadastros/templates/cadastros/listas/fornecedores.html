@@ -1,0 +1,55 @@
+{% extends 'paginas/modelo.html' %}
+
+{% load static %}
+
+{% block conteudo %}
+<h1 class="mt-4">
+    Lista de Fornecedores
+
+    <a href="{% url 'cadastrar-fornecedor' %}"
+       class="btn btn-primary float-right ms-5">
+        Cadastrar Fornecedor
+    </a>
+
+</h1>
+
+
+
+<hr>
+
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>Documento</th>
+            <th>Telefone</th>
+            <th>Opções</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for obj in object_list %}
+            <tr>
+                <td>{{ obj.pk }}</td>
+                <td>{{ obj.nome }}</td>
+                <td>{{ obj.documento }}</td>
+                <td>{{ obj.telefone }}</td>
+                <td>
+                    <a href="{% url 'editar-fornecedor' obj.pk %}" class="btn btn-warning">
+                        Editar</a>
+                    <a href="{% url 'excluir-fornecedor' obj.pk %}" class="btn btn-danger">
+                        Excluir</a>
+                </td>
+            </tr>        
+        {% empty %}
+            <tr>
+                <td colspan="100%">Nenhum registro encontado.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock %}

@@ -6,10 +6,11 @@
 
 {% block conteudo %}
 
-<h1 class="mt-4">Cadastros do sistema</h1>
+<h1 class="mt-4">Exclusão de dados</h1>
 
-<p class="lead">
-    * Campo obrigatório
+<p class="lead text-danger">
+    Tem certeza que deseja excluir o registro: <br>
+    {{ object }}
 </p>
 
 <form method="POST">
@@ -18,8 +19,8 @@
 
     {{ form|crispy }}
 
-    <button type="submit" class="btn btn-primary">
-        Salvar
+    <button type="submit" class="btn btn-danger">
+        Excluir
     </button>
 
 </form>
