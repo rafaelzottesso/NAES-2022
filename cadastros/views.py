@@ -4,25 +4,28 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from .models import Tipo_Despesa, Fornecedor, Despesa, Parcela
 
 # Create your views here.
 
-class FornecedorCreate(CreateView):
+class FornecedorCreate(LoginRequiredMixin, CreateView):
     model = Fornecedor
     fields = ['nome', 'documento', 'telefone']
     template_name = 'cadastros/form.html'
     success_url = reverse_lazy('listar-fornecedor')
+    # login_url = reverse_lazy('login')
 
 
-class TipoDespesaCreate(CreateView):
+class TipoDespesaCreate(LoginRequiredMixin, CreateView):
     model = Tipo_Despesa
     fields = ['nome']
     template_name = 'cadastros/form.html'
     success_url = reverse_lazy('index')
 
 
-class DespesaCreate(CreateView):
+class DespesaCreate(LoginRequiredMixin, CreateView):
     model = Despesa
     fields = ['fornecedor', 'categoria', 'descricao', 'data', 'valor', 'desconto', 'parcelas', 'quitou']
     template_name = 'cadastros/form.html'
@@ -32,21 +35,21 @@ class DespesaCreate(CreateView):
 ###################################
 
 
-class FornecedorUpdate(UpdateView):
+class FornecedorUpdate(LoginRequiredMixin, UpdateView):
     model = Fornecedor
     fields = ['nome', 'documento', 'telefone']
     template_name = 'cadastros/form.html'
     success_url = reverse_lazy('listar-fornecedor')
 
 
-class TipoDespesaUpdate(UpdateView):
+class TipoDespesaUpdate(LoginRequiredMixin, UpdateView):
     model = Tipo_Despesa
     fields = ['nome']
     template_name = 'cadastros/form.html'
     success_url = reverse_lazy('index')
 
 
-class DespesaUpdate(UpdateView):
+class DespesaUpdate(LoginRequiredMixin, UpdateView):
     model = Despesa
     fields = ['fornecedor', 'categoria', 'descricao',
               'data', 'valor', 'desconto', 'parcelas', 'quitou']
@@ -55,19 +58,19 @@ class DespesaUpdate(UpdateView):
 
 ####################################
 
-class FornecedorDelete(DeleteView):
+class FornecedorDelete(LoginRequiredMixin, DeleteView):
     model = Fornecedor
     template_name = 'cadastros/form-delete.html'
     success_url = reverse_lazy('listar-fornecedor')
 
 
-class TipoDespesaDelete(DeleteView):
+class TipoDespesaDelete(LoginRequiredMixin, DeleteView):
     model = Tipo_Despesa
     template_name = 'cadastros/form-delete.html'
     success_url = reverse_lazy('index')
 
 
-class DespesaDelete(DeleteView):
+class DespesaDelete(LoginRequiredMixin, DeleteView):
     model = Despesa
     template_name = 'cadastros/form-delete.html'
     success_url = reverse_lazy('index')
@@ -75,6 +78,6 @@ class DespesaDelete(DeleteView):
 
 #################################
 
-class FornecedorList(ListView):
+class FornecedorList(LoginRequiredMixin, ListView):
     model = Fornecedor
     template_name = 'cadastros/listas/fornecedores.html'

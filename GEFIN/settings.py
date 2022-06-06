@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'cadastros.apps.CadastrosConfig',
     'paginas.apps.PaginasConfig',
+    'usuarios.apps.UsuariosConfig',
 
     'crispy_forms',
     'crispy_bootstrap5',
@@ -132,3 +133,10 @@ STATICFILES_DIRS = [ BASE_DIR / 'static' ]
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Views e dados de Login
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'login'
