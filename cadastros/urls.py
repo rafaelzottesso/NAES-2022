@@ -3,7 +3,7 @@ from django.urls import path
 from .views import FornecedorCreate, DespesaCreate, TipoDespesaCreate
 from .views import FornecedorUpdate, DespesaUpdate, TipoDespesaUpdate
 from .views import FornecedorDelete, DespesaDelete, TipoDespesaDelete
-from .views import FornecedorList
+from .views import FornecedorList, DespesaList, TipoDespesaList
 
 urlpatterns = [
     path('cadastrar/fornecedor/', FornecedorCreate.as_view(), name='cadastrar-fornecedor'),
@@ -19,6 +19,8 @@ urlpatterns = [
     path('excluir/tipo-despesa/<int:pk>/', TipoDespesaDelete.as_view(),name='excluir-tipo-despesa'),
 
     path('listar/fornecedores/', FornecedorList.as_view(), name='listar-fornecedor'),
+    path('listar/despesas/', DespesaList.as_view(), name='listar-despesa'),
+    path('listar/tipos-despesa/', TipoDespesaList.as_view(), name='listar-tipo-despesa'),
 
     
 ]

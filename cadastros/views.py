@@ -40,7 +40,7 @@ class TipoDespesaCreate(LoginRequiredMixin, CreateView):
     model = Tipo_Despesa
     fields = ['nome']
     template_name = 'cadastros/form.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('listar-tipo-despesa')
 
     def form_valid(self, form):
 
@@ -55,7 +55,7 @@ class DespesaCreate(LoginRequiredMixin, CreateView):
     model = Despesa
     fields = ['fornecedor', 'categoria', 'descricao', 'data', 'valor', 'desconto', 'parcelas', 'quitou']
     template_name = 'cadastros/form.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('listar-despesa')
 
     def form_valid(self, form):
 
@@ -88,7 +88,7 @@ class TipoDespesaUpdate(LoginRequiredMixin, UpdateView):
     model = Tipo_Despesa
     fields = ['nome']
     template_name = 'cadastros/form.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('listar-tipo-despesa')
 
     def get_object(self):
         self.object = get_object_or_404(
@@ -104,7 +104,7 @@ class DespesaUpdate(LoginRequiredMixin, UpdateView):
     fields = ['fornecedor', 'categoria', 'descricao',
               'data', 'valor', 'desconto', 'parcelas', 'quitou']
     template_name = 'cadastros/form.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('listar-despesa')
 
     def get_object(self):
         self.object = get_object_or_404(
@@ -133,7 +133,7 @@ class FornecedorDelete(LoginRequiredMixin, DeleteView):
 class TipoDespesaDelete(LoginRequiredMixin, DeleteView):
     model = Tipo_Despesa
     template_name = 'cadastros/form-delete.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('listar-tipo-despesa')
 
     def get_object(self):
         self.object = get_object_or_404(
@@ -147,7 +147,7 @@ class TipoDespesaDelete(LoginRequiredMixin, DeleteView):
 class DespesaDelete(LoginRequiredMixin, DeleteView):
     model = Despesa
     template_name = 'cadastros/form-delete.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('listar-despesa')
 
     def get_object(self):
         self.object = get_object_or_404(
@@ -168,4 +168,26 @@ class FornecedorList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         # armazena a lista e retorna ela
         self.object_list = Fornecedor.objects.filter(usuario=self.request.user)
+        return self.object_list
+
+
+class DespesaList(LoginRequiredMixin, ListView):
+    model = Despesa
+    template_name = 'cadastros/listas/despesas.html'
+
+    # Modifica a query padrão de select que vai no banco
+    def get_queryset(self):
+        # armazena a lista e retorna ela
+        self.object_list = Despesa.objects.filter(usuario=self.request.user)
+        return self.object_list
+
+
+class TipoDespesaList(LoginRequiredMixin, ListView):
+    model = Tipo_Despesa
+    template_name = 'cadastros/listas/tipos-despesa.html'
+
+    # Modifica a query padrão de select que vai no banco
+    def get_queryset(self):
+        # armazena a lista e retorna ela
+        self.object_list = Tipo_Despesa.objects.filter(usuario=self.request.user)
         return self.object_list
