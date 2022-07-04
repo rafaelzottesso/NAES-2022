@@ -191,3 +191,12 @@ class TipoDespesaList(LoginRequiredMixin, ListView):
         # armazena a lista e retorna ela
         self.object_list = Tipo_Despesa.objects.filter(usuario=self.request.user)
         return self.object_list
+
+
+class ParcelaList(LoginRequiredMixin, ListView):
+    model = Parcela
+    template_name = 'cadastros/listas/parcela.html'
+
+    def get_queryset(self):
+        self.object_list = Parcela.objects.filter(despesa__usuario=self.request.user)
+        return self.object_list

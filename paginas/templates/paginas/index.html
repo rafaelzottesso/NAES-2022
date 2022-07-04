@@ -11,4 +11,21 @@
 <p class="lead">
     Exemplo de texto introdutório.
 </p>
+
+<h3>
+    {{ teste }}
+</h3>
+
+{% if request.user.is_authenticated %}
+<h4>
+    Parcelas vencidas: {{ parcelas_vencidas }}
+</h4>
+{% endif %}
+
+{% if request.user.groups.all.0.name == "Gerente" %}
+<div class="alert alert-primary" role="alert">
+    <strong>Gerente detectado</strong>
+</div>
+{% endif %}
+
 {% endblock %}
