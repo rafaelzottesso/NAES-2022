@@ -8,6 +8,8 @@ from .models import Tipo_Despesa, Fornecedor, Despesa, Parcela
 
 from django.shortcuts import get_object_or_404
 
+import datetime
+
 
 # Create your views here.
 
@@ -56,12 +58,17 @@ class DespesaCreate(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('listar-despesa')
 
     def form_valid(self, form):
-
         form.instance.usuario = self.request.user
-
         url = super().form_valid(form)
-
         return url
+
+    def get_context_data(self, *args, **kwargs):
+        dados = super().get_context_data(*args, **kwargs)
+
+        dados["form"].fields["fornecedor"].queryset = Fornecedor.objects.filter(usuario=self.request.user)
+        dados["form"].fields["categoria"].queryset = Tipo_Despesa.objects.filter(usuario=self.request.user)
+
+        return dados
 
 
 ###################################
@@ -111,6 +118,14 @@ class DespesaUpdate(LoginRequiredMixin, UpdateView):
             pk=self.kwargs['pk']
         )
         return self.object
+
+    def get_context_data(self, *args, **kwargs):
+        dados = super().get_context_data(*args, **kwargs)
+
+        dados["form"].fields["fornecedor"].queryset = Fornecedor.objects.filter(usuario=self.request.user)
+        dados["form"].fields["categoria"].queryset = Tipo_Despesa.objects.filter(usuario=self.request.user)
+
+        return dados
 
 ####################################
 
@@ -193,8 +208,35 @@ class TipoDespesaList(LoginRequiredMixin, ListView):
 
 class ParcelaList(LoginRequiredMixin, ListView):
     model = Parcela
-    template_name = 'cadastros/listas/parcela.html'
+    template_name = 'cadastros/listas/parcelas.html'
 
     def get_queryset(self):
         self.object_list = Parcela.objects.filter(despesa__usuario=self.request.user)
+        return self.object_list
+
+
+class ParcelaVencidaList(LoginRequiredMixin, ListView):
+    model = Parcela
+    template_name = 'cadastros/listas/parcelas.html'
+
+    def get_queryset(self):
+        self.object_list = Parcela.objects.filter(
+            despesa__usuario=self.request.user,
+            valor_pago__isnull=True,
+            pago_em__isnull=True,
+            vencimento__lt=datetime.datetime.today()
+        )
+        return self.object_list
+
+
+class ParcelaPagaList(LoginRequiredMixin, ListView):
+    model = Parcela
+    template_name = 'cadastros/listas/parcelas.html'
+
+    def get_queryset(self):
+        self.object_list = Parcela.objects.filter(
+            despesa__usuario=self.request.user,
+            valor_pago__isnull=False,
+            pago_em__isnull=False
+        )
         return self.object_list

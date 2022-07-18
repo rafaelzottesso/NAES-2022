@@ -1,0 +1,46 @@
+{% extends 'paginas/modelo.html' %}
+
+{% load static %}
+
+{% block conteudo %}
+<h1 class="mt-4">
+    Lista de Parcelas
+</h1>
+
+<hr>
+
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Número</th>
+            <th>Despesa</th>
+            <th>Vencimento</th>
+            <th>Valor</th>
+            <th>Valor pago</th>
+            <th>Pago em</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for obj in object_list %}
+            <tr>
+                <td>{{ obj.pk }}</td>
+                <td>{{ obj.numero }}</td>
+                <td>{{ obj.despesa }}</td>
+                <td>{{ obj.vencimento }}</td>
+                <td>{{ obj.valor }}</td>
+                <td>{{ obj.valor_pago }}</td>
+                <td>{{ obj.pago_em }}</td>
+            </tr>        
+        {% empty %}
+            <tr>
+                <td colspan="100%">Nenhum registro encontado.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock %}
