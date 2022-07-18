@@ -13,7 +13,7 @@
 </p>
 
 <h3>
-    {{ teste }}
+    {{ teste }} 
 </h3>
 
 {% if request.user.is_authenticated %}
@@ -22,10 +22,5 @@
 </h4>
 {% endif %}
 
-{% if request.user.groups.all.0.name == "Gerente" %}
-<div class="alert alert-primary" role="alert">
-    <strong>Gerente detectado</strong>
-</div>
-{% endif %}
 
 {% endblock %}

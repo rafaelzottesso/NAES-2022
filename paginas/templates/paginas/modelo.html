@@ -47,7 +47,13 @@
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <i class="fas fa-user fa-fw"></i>
-                    {{ request.user  }}
+                    {{ request.user  }} 
+
+
+                    {% if request.user.groups.all.0.name == "Gerente" %}
+                    <span class="badge bg-primary">Gerente</span>
+                    {% endif %}
+
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="#!">Meus dados</a></li>
@@ -151,6 +157,11 @@
                 <div class="sb-sidenav-footer">
                     <div class="small">Autenticado como:</div>
                     {{ request.user }}
+
+                    {% if request.user.groups.all.0.name == "Gerente" %}
+                    <span class="badge bg-primary">Gerente</span>
+                    {% endif %}
+
                 </div>
                 {% endif %}
             </nav>

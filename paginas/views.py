@@ -11,7 +11,7 @@ class PaginaInicialView(TemplateView):
         dados = super().get_context_data(*args, **kwargs)
 
         # Cria um dado na posição teste
-        dados["teste"] = "Mah oeee"
+        dados["teste"] = "Bem vindo ao sistema"
     
         # Verifica se o usuário está logado
         if(self.request.user.is_authenticated):
