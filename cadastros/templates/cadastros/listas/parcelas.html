@@ -27,12 +27,15 @@
         {% for obj in object_list %}
             <tr>
                 <td>{{ obj.pk }}</td>
-                <td>{{ obj.numero }}</td>
-                <td>{{ obj.despesa }}</td>
-                <td>{{ obj.vencimento }}</td>
-                <td>{{ obj.valor }}</td>
-                <td>{{ obj.valor_pago }}</td>
-                <td>{{ obj.pago_em }}</td>
+                <td>{{ obj.numero }}/{{ obj.despesa.parcelas }}</td>
+                <td>
+                    {{ obj.despesa.fornecedor }} <br>
+                    R${{ obj.despesa.valor }}
+                </td>
+                <td>{{ obj.vencimento|date:"d/m/Y" }}</td>
+                <td>R${{ obj.valor }}</td>
+                <td>{{ obj.valor_pago|default_if_none:"-" }}</td>
+                <td>{{ obj.pago_em|date:"d/m/Y" }}</td>
             </tr>        
         {% empty %}
             <tr>
@@ -42,5 +45,21 @@
     </tbody>
 
 </table>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1">Primeira</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+        {% endif %}
+        
+        <li class="page-item"><a class="page-link" href="#">{{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</a></li>
+        
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Próximo</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a></li>
+        {% endif %}
+    </ul>
+</nav>
 
 {% endblock %}

@@ -21,6 +21,7 @@
 
     <thead>
         <tr>
+            <th>N.</th>
             <th>#</th>
             <th>Nome</th>
             <th>Documento</th>
@@ -32,6 +33,7 @@
     <tbody>
         {% for obj in object_list %}
             <tr>
+                <td>{{ forloop.counter }}</td>
                 <td>{{ obj.pk }}</td>
                 <td>{{ obj.nome }}</td>
                 <td>{{ obj.documento }}</td>

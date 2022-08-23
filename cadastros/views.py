@@ -9,7 +9,8 @@ from .models import Tipo_Despesa, Fornecedor, Despesa, Parcela
 from django.shortcuts import get_object_or_404
 
 import datetime
-
+# Para somar meses a uma data
+from dateutil.relativedelta import relativedelta
 
 # Create your views here.
 
@@ -60,6 +61,31 @@ class DespesaCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.usuario = self.request.user
         url = super().form_valid(form)
+
+        # Para cada parcela, cria um objeto Parcela
+        try:
+            valor_parcela = self.object.valor / self.object.parcelas
+            
+            for i in range( self.object.parcelas ):
+                mes_parcela = relativedelta(months=i)
+                
+                parcela = Parcela.objects.create(
+                    despesa=self.object,
+                    numero=i+1,
+                    vencimento=self.object.data + mes_parcela,
+                    valor=valor_parcela,
+                )
+
+                if(self.object.quitou):
+                    parcela.pago_em = parcela.vencimento
+                    parcela.valor_pago = valor_parcela
+                    parcela.save()
+
+        except:
+            self.object.delete()
+            form.add_error(None, "Houve um problema. Tente novamente!")
+            return self.form_invalid(form)
+
         return url
 
     def get_context_data(self, *args, **kwargs):
@@ -209,9 +235,10 @@ class TipoDespesaList(LoginRequiredMixin, ListView):
 class ParcelaList(LoginRequiredMixin, ListView):
     model = Parcela
     template_name = 'cadastros/listas/parcelas.html'
+    paginate_by = 3
 
     def get_queryset(self):
-        self.object_list = Parcela.objects.filter(despesa__usuario=self.request.user)
+        self.object_list = Parcela.objects.filter(despesa__usuario=self.request.user).order_by('vencimento')
         return self.object_list
 
 
