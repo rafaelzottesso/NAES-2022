@@ -27,3 +27,45 @@
 <br>
 
 {% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/jquery.mask.min.js' %}"></script>
+
+<script>
+    $(document).ready(function(){
+
+        var SPMaskBehavior = function (val) {
+            return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+        },
+            spOptions = {
+                onKeyPress: function (val, e, field, options) {
+                    field.mask(SPMaskBehavior.apply({}, arguments), options);
+                }
+            };
+
+        $('#id_telefone').mask(SPMaskBehavior, spOptions);
+
+
+        var cfpcnpj = function (val) {
+            return val.replace(/\D/g, '').length > 11 ? '00.000.000/0000-00' : '000.000.000-009';
+        },
+            docOptions = {
+                onKeyPress: function (val, e, field, options) {
+                    field.mask(cfpcnpj.apply({}, arguments), options);
+                }
+            };
+        
+        $("#id_documento").mask(cfpcnpj, docOptions);
+
+        
+        $("#id_data").mask("00/00/0000");
+        $("#id_cep").mask("00000-000");
+
+
+
+    });
+
+</script>
+
+{% endblock %}
+
