@@ -1,5 +1,7 @@
 {% load static %}
 
+{% load meus_filtros %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -53,7 +55,7 @@
                     {{ request.user  }} 
 
 
-                    {% if request.user.groups.all.0.name == "Gerente" %}
+                    {% if request.user|esta_no_grupo:"Gerente" %}
                     <span class="badge bg-primary">Gerente</span>
                     {% endif %}
 

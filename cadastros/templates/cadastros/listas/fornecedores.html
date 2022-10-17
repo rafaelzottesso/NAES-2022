@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% load meus_filtros %}
+
 {% block conteudo %}
 <h1 class="mt-4">
     Lista de Fornecedores
@@ -36,8 +38,15 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{ obj.pk }}</td>
                 <td>{{ obj.nome }}</td>
-                <td>{{ obj.documento }}</td>
-                <td>{{ obj.telefone }}</td>
+
+                <td>{% substituir obj.documento "." "*" "-" "*" %}</td>
+
+                {% if obj.telefone|verificardddpr  %}
+                <td>Paraná: {{ obj.telefone }}</td>  
+                {% else %}
+                <td>Outro: {{ obj.telefone }}</td>
+                {% endif %}
+                
                 <td>
                     <a href="{% url 'editar-fornecedor' obj.pk %}" class="btn btn-warning">
                         Editar</a>
