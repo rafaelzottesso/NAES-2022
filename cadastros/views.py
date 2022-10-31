@@ -217,7 +217,7 @@ class DespesaList(LoginRequiredMixin, ListView):
     # Modifica a query padrão de select que vai no banco
     def get_queryset(self):
         # armazena a lista e retorna ela
-        self.object_list = Despesa.objects.filter(usuario=self.request.user)
+        self.object_list = Despesa.objects.filter(usuario=self.request.user).select_related('fornecedor', 'categoria')
         return self.object_list
 
 
@@ -235,10 +235,12 @@ class TipoDespesaList(LoginRequiredMixin, ListView):
 class ParcelaList(LoginRequiredMixin, ListView):
     model = Parcela
     template_name = 'cadastros/listas/parcelas.html'
-    paginate_by = 3
+    paginate_by = 10
 
     def get_queryset(self):
-        self.object_list = Parcela.objects.filter(despesa__usuario=self.request.user).order_by('vencimento')
+        self.object_list = Parcela.objects.filter(
+                despesa__usuario=self.request.user
+            ).order_by('vencimento').select_related('despesa', 'despesa__fornecedor')
         return self.object_list
 
 
@@ -252,7 +254,7 @@ class ParcelaVencidaList(LoginRequiredMixin, ListView):
             valor_pago__isnull=True,
             pago_em__isnull=True,
             vencimento__lt=datetime.datetime.today()
-        )
+        ).select_related('despesa', 'despesa__fornecedor', 'despesa__fornecedor__cidade')
         return self.object_list
 
 

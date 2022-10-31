@@ -39,7 +39,7 @@ class Despesa(models.Model):
 
 
 class Parcela(models.Model):
-    despesa = models.ForeignKey(Despesa, on_delete=models.CASCADE)
+    despesa = models.ForeignKey(Despesa, on_delete=models.CASCADE) 
     numero = models.IntegerField(verbose_name="Nº da parcela")
     vencimento = models.DateField()
     valor = models.DecimalField(decimal_places=2, max_digits=9)
